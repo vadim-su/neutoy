@@ -1,0 +1,42 @@
+name: Deploy to Server with Deploy Key
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.5.3
+        with:
+          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
+
+
+      - name: Clone or Update Repository on Server
+        run: |
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            REPO_DIR=/home/${{ secrets.SSH_USER }}/neutoy
+            if [ ! -d "$REPO_DIR" ]; then
+              # Clone the repository if it doesn't exist
+              git clone git@github.com:vadim-su/neutoy.git $REPO_DIR
+            else
+              # Pull the latest changes if the repository exists
+              cd $REPO_DIR
+              git pull origin main
+            fi
+          EOF
+
+      - name: Run Docker Compose
+        run: |
+          ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
+            cd /home/${{ secrets.SSH_USER }}/neutoy/deploy
+            docker compose down
+            docker compose up --build -d
+          EOF
