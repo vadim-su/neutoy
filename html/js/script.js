@@ -1,5 +1,5 @@
 import { init_lib, clear, draw, set_pixel, set_button_handler, set_timeout, cleanup } from './lib.js';
-const LLM_URL = 'http://localhost:8081/api/produce_code';
+const LLM_URL = 'api/produce_code';
 
 
 const allowedFunctions = {
