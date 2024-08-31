@@ -32,14 +32,14 @@ jobs:
               git pull origin main
             fi
           EOF
-        env:
-          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          REPLICATE_API_KEY: ${{ secrets.REPLICATE_API_KEY }}
 
       - name: Run Docker Compose
         run: |
           ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            cd /home/${{ secrets.SSH_USER }}/neutoy/deploy
-            docker compose down
-            docker compose up --build -d
+            cd /home/${{ secrets.SSH_USER }}/neutoy
+            docker compose -f deploy/docker-compose.yml down
+            docker compose -f deploy/docker-compose.yml up --build -d
           EOF
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REPLICATE_API_KEY: ${{ secrets.REPLICATE_API_KEY }}
