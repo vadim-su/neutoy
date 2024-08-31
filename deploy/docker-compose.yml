@@ -9,6 +9,10 @@ services:
 
     user: 1000:1000
 
+    environment:
+      ANTHROPIC_API_KEY: ${ANTHROPIC_API_KEY}
+      REPLICATE_API_KEY: ${REPLICATE_API_KEY}
+
   nginx:
     image: nginx:latest
     ports:

@@ -32,6 +32,9 @@ jobs:
               git pull origin main
             fi
           EOF
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REPLICATE_API_KEY: ${{ secrets.REPLICATE_API_KEY }}
 
       - name: Run Docker Compose
         run: |
