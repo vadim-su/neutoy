@@ -3,8 +3,22 @@ FROM python:3.12
 
 ENV PORT=8080
 
+SHELL ["/bin/bash", "-c"]
+
 RUN pip install --upgrade pip
 RUN pip install pdm
+
+RUN useradd -m service -s /bin/bash
+USER service
+
+WORKDIR /app
+COPY --chown=service:service pyproject.toml /app
+COPY --chown=service:service pdm.lock /app
+COPY --chown=service:service README.md /app
+RUN pdm install --prod
+
+COPY --chown=service:service . /app
+RUN pdm install --prod
 
 EXPOSE $PORT
 
