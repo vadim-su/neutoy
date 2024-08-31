@@ -40,6 +40,6 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             cd /home/${{ secrets.SSH_USER }}/neutoy
-            docker compose -f deploy/docker-compose.yml down
-            docker compose -f deploy/docker-compose.yml up --build -d
+            docker compose -f deploy/docker-compose.yml -p neutoy down
+            docker compose -f deploy/docker-compose.yml -p neutoy up --build -d
           EOF
