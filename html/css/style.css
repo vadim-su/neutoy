@@ -1,0 +1,123 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+body::before {
+    content: "";
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('../assets/bg.jpg');
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-size: auto;
+    z-index: -1;
+}
+
+#emulator {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#matrix-display {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: 
+        translate(-219px, -3px) rotateX(0deg) rotateZ(0deg) scale(2.3) skew(0deg, 14deg);
+    display: grid;
+    grid-template-columns: repeat(10, 12px);
+    grid-template-rows: repeat(10, 12px);
+    gap: 2px;
+}
+
+.pixel {
+    width: 12px;
+    height: 12px;
+    background-color: rgba(204, 204, 204, 0.7);
+    border: 0px solid rgba(153, 153, 153, 0.7);
+    border-radius: 4px;
+}
+
+#touch_button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: 
+        translate(149px, -21px) rotateX(19.3deg) rotateZ(0deg) scale(1, 1.8) skew(0deg, -18deg);
+    padding: 60px;
+    font-size: 0px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #4a4a4a;
+    background-image: linear-gradient(to bottom, #5a5a5a, #4a4a4a);
+    border: 1px solid #3a3a3a;
+    border-radius: 5px;
+    box-shadow: 
+        0 1px 0 rgba(255,255,255,0.2) inset,
+        0 -1px 0 rgba(0,0,0,0.2) inset,
+        0 4px 6px rgba(0,0,0,0.3);
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.4);
+    transition: all 0.1s ease;
+    cursor: pointer;
+}
+
+#touch_button:hover {
+    background-image: linear-gradient(to bottom, #5a5a5a, #5a5a5a);
+}
+
+#touch_button:active {
+    background-image: linear-gradient(to bottom, #5a5a5a, #5a5a5a);
+    box-shadow: 
+        0 1px 0 rgba(255,255,255,0.2) inset,
+        0 -1px 0 rgba(0,0,0,0.2) inset,
+        0 1px 2px rgba(0,0,0,0.2) inset;
+}
+
+ 
+#speak_button {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: 
+        translate(-15px, -225px) rotateX(55.8deg) rotateZ(0deg) scale(0.45) skew(0deg, 0deg);
+    padding: 60px;
+    font-size: 0px;
+    font-weight: bold;
+    color: #ffffff;
+    background-color: #4a4a4a;
+    background-image: linear-gradient(to bottom, #5a5a5a, #4a4a4a);
+    border: 1px solid #3a3a3a;
+    border-radius: 5px;
+    box-shadow: 
+        0 1px 0 rgba(255,255,255,0.2) inset,
+        0 -1px 0 rgba(0,0,0,0.2) inset,
+        0 4px 6px rgba(0,0,0,0.3);
+    text-shadow: 0 -1px 0 rgba(0,0,0,0.4);
+    transition: all 0.1s ease;
+    cursor: pointer;
+    border-radius: 200px;
+}
+
+#speak_button:hover {
+    background-image: linear-gradient(to bottom, #4a4a4a, #3a3a3a);
+}
+
+#speak_button:active {
+    background-image: linear-gradient(to bottom, #5a5a5a, #5a5a5a);
+    box-shadow: 
+        0 1px 0 rgba(255,255,255,0.2) inset,
+        0 -1px 0 rgba(0,0,0,0.2) inset,
+        0 1px 2px rgba(0,0,0,0.2) inset;
+}
