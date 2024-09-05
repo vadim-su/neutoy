@@ -28,7 +28,7 @@ class MatrixDisplay {
   clear() {
       this.pixelMatrix.forEach(row => {
           row.forEach(pixel => {
-              pixel.style.backgroundColor = 'white';
+              pixel.style.backgroundColor = 'rgba(255, 255, 255, 0.7)';
           });
       });
   }
