@@ -1,153 +1,199 @@
 <!DOCTYPE html>
 <html lang="en">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Device Emulator</title>
-        <link rel="stylesheet" href="css/style.css">
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Device Emulator</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;700&display=swap" rel="stylesheet">
+</head>
 
-    <body>
-         
-                <div id="emulator">
-             
-                    <div id="matrix-display">
-                        <!-- 100 divs for 10x10 matrix -->
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                        <div class="pixel"></div>
-                    </div>
-                    <button id="touch_button">Touch Me</button>
-                    <button id="speak_button">Touch Me</button>
-                </div>
+<body>
 
-        <div id="clickable-area"></div>
-        <div id="info-toggle" class="toggle-button">i</div>
-        <div id="project-info" class="project-info">
-             
-                <textarea id="system-prompt" placeholder="Enter system prompt here">
-                You are integrated AI and can control a device with a display. The display has 10x10 pixels. You can use the simplest javascript to operate the device.
-                In your code you can use the next functions to interact with the display:
-                set_pixel(x, y, color) -- set pixel color
-                clear -- clear display
-                draw(colorMatrix, defaultColor) -- redraw display image. colorMatrix is a matrix of strings with colors, last pixel in raw and last columns can be skiped. For them will be used defaultColor. User will ask to make device be something. You can write a code to make the device be this thing. It would help if you described your decisions and write  code at the end of your response. If your understand me write "I'm ready"
-                set_button_handler(handler) -- set button handler
-                set_timeout(handler, timeout) -- set timeout (DO NOT USE setTimeout from built-in JS)
-                Your answer should be interactive to be useful for kids (try to use button if needed)</textarea>
-                <textarea id="user-request" placeholder="Enter text here"></textarea>
-                <textarea id="reasoning-text" placeholder="Reasoning will be generated by LLM" readonly></textarea>
-                <textarea id="code-text" placeholder="Code will be generated by LLM"></textarea>
-                <button id="submit-button">Submit</button>
-                <button id="record-button">Start Recording</button>
-                <button id="rerun-button">Rerun</button>
+    <div id="emulator">
 
-                <div id="gyroscope">Gyroscope: <span id="gyro-data">0, 0, 0</span></div>
+        <div id="matrix-display">
+            <!-- 100 divs for 10x10 matrix -->
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
+            <div class="pixel"></div>
         </div>
+        <button id="touch_button">Touch Me</button>
+        <button id="speak_button">Touch Me</button>
+    </div>
 
-        <audio id="tapSound" src="assets/tap.mp3"></audio>
-        <script type="module" src="js/interact.js"></script>
-        <script type="module" src="js/script.js"></script>
-        <script type="module" src="js/record.js"></script>
-    </body>
+    <div id="clickable-area"></div>
+    <div id="info-toggle" class="toggle-button">i</div>
+    <div id="project-info" class="project-info">
+
+        <textarea id="system-prompt" placeholder="Enter system prompt here">You are an integrated AI and can control a device with a display. The display has 10x10 pixels. You can use the simplest JavaScript to operate the device.
+In your code, you can use the following functions to interact with the display:
+- `set_pixel(x, y, color)` -- set pixel color
+- `clear` -- clear display
+- `draw(colorMatrix, defaultColor)` -- redraw display image. `colorMatrix` is a matrix of strings with colors, the last pixel in each row and the last column can be skipped. For them, the `defaultColor` will be used. The `colorMatrix` accepts a string of colors.
+You can use only the following colors:
+- 'R': 'red'
+- 'G': 'green'
+- 'B': 'blue'
+- 'Y': 'yellow'
+- 'P': 'purple'
+- 'O': 'orange'
+- 'I': 'pink'
+- 'N': 'brown'
+- 'A': 'gray'
+- 'L': 'black'
+- 'W': 'white'
+
+The user will ask to make the device be something. You can write code to make the device be this thing. It would help if you described your decisions and wrote the code at the end of your response.
+
+Additional Functions:
+- `set_button_handler(handler)` -- set button handler
+- `set_timeout(handler, timeout)` -- set timeout (DO NOT USE `setTimeout` from built-in JS)
+
+Example Usage:
+1. To set a pixel at position (2, 3) to red:
+    ```javascript
+    set_pixel(2, 3, 'R');
+    ```
+2. To clear the display:
+    ```javascript
+    clear();
+    ```
+3. To draw a face:
+    ```javascript
+    draw(
+        [
+            'GGGGGGGGGG',
+            'GGGGGGGGGG',
+            'GGBBGBBGGG',
+            'GGGGGGGGGG',
+            'GGGGGGGGGG',
+            'GGGGGGGGGG',
+            'GGGBBBBGGG',
+            'GGGGGGGGGG',
+            'GGGGGGGGGG',
+            'GGGGGGGGGG'
+        ],
+        'G'
+    );
+    ```
+Matrix is a 10x10 grid of pixels so think of it when create your solutions. For example something can be just a dot and not a big image.
+All your solutions should be interactive.
+After your generation is attentive check the result code and fix errors before giving me it.</textarea>
+        <textarea id="user-request" placeholder="Enter text here"></textarea>
+        <textarea id="reasoning-text" placeholder="Reasoning will be generated by LLM" readonly></textarea>
+        <textarea id="code-text" placeholder="Code will be generated by LLM"></textarea>
+        <button id="submit-button">Submit</button>
+        <button id="record-button">Start Recording</button>
+        <button id="rerun-button">Rerun</button>
+
+        <div id="gyroscope">Gyroscope: <span id="gyro-data">0, 0, 0</span></div>
+    </div>
+
+    <audio id="tapSound" src="assets/tap.mp3"></audio>
+    <script type="module" src="js/interact.js"></script>
+    <script type="module" src="js/script.js"></script>
+    <script type="module" src="js/record.js"></script>
+</body>
+
 </html>
