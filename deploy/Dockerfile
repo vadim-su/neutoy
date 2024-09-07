@@ -1,7 +1,7 @@
 # Use an official Python runtime as a parent image
 FROM python:3.12
 
-ENV PORT=8080
+ENV PORT=8081
 
 SHELL ["/bin/bash", "-c"]
 
