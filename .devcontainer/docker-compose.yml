@@ -7,9 +7,6 @@ services:
     volumes:
       - ../..:/workspaces:cached
 
-    ports:
-      - "8000:8000"
-
     # Overrides default command so things don't shut down after the process ends.
     command: sleep infinity
     # Use "forwardPorts" in **devcontainer.json** to forward an app port locally.
@@ -22,7 +19,7 @@ services:
       - ../html:/usr/share/nginx/html:cached
 
     ports:
-      - "8080:8080"
+      - "8081:8081"
 
     depends_on:
       - app
