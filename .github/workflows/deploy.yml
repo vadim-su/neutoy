@@ -38,5 +38,5 @@ jobs:
           ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
             cd /home/${{ secrets.SSH_USER }}/neutoy
             docker compose -f deploy/docker-compose.yml -p neutoy down
-            ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }} REPLICATE_API_KEY=${{ secrets.REPLICATE_API_KEY }} docker compose -f deploy/docker-compose.yml -p neutoy up --build -d
+            ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }} REPLICATE_API_KEY=${{ secrets.REPLICATE_API_KEY }} GOOGLE_OAUTH_CONFIG=${{ secrets.GOOGLE_OAUTH_CONFIG }} docker compose -f deploy/docker-compose.yml -p neutoy up --build -d
           EOF

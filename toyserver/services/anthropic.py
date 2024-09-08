@@ -44,6 +44,10 @@ class AnthropicInterface:
                                 'type': 'string',
                                 'description': 'Voice over to explain the reasoning for a kid.',
                             },
+                            'lang': {
+                                'type': 'string',
+                                'description': 'Language of the voice over.',
+                            },
                             'code': {
                                 'type': 'string',
                                 'description': 'Javascript code to control the device.',

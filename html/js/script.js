@@ -1,4 +1,5 @@
 import { init_lib, clear, draw, set_pixel, set_button_handler, set_timeout, cleanup } from './lib.js';
+import { play_speech } from './voice.js';
 const LLM_URL = 'api/produce_code';
 
 
@@ -49,6 +50,8 @@ async function submit_button_handler() {
 
     reason_text.value = resp_body.reason;
     code_text.value = resp_body.code
+    const lang = resp_body.lang
+    play_speech(resp_body.voice_over, resp_body.lang);
     run_code(resp_body.code);
 }
 

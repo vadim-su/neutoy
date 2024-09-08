@@ -1,12 +1,15 @@
+from io import BytesIO
+import json
 import os
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, FastAPI, UploadFile
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, StreamingResponse
 
-from toyserver.llms.anthropic import AnthropicInterface
-from toyserver.llms.whisper import Whisper
-from toyserver.models import LlmRequest, LlmResponse
+from toyserver.models import LlmRequest, LlmResponse, SpeachTranscriptResponse, TextToSpeechRequest
+from toyserver.services.anthropic import AnthropicInterface
+from toyserver.services.gspeach import GoogleVoiceService
+from toyserver.services.whisper import WhisperService
 
 # Create an instance of the FastAPI class
 router = APIRouter(prefix='/api')
@@ -16,6 +19,7 @@ router = APIRouter(prefix='/api')
 
 ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY', '')
 REPLICATE_API_KEY = os.getenv('REPLICATE_API_KEY', '')
+GOOGLE_OAUTH_CONFIG = json.loads(os.getenv('GOOGLE_OAUTH_CONFIG', ''))
 
 if not ANTHROPIC_API_KEY or not REPLICATE_API_KEY:
     raise ValueError('Please set the ANTHROPIC_API_KEY and REPLICATE_API_KEY environment variables.')
@@ -26,9 +30,14 @@ def anthropic_interface() -> AnthropicInterface:
     return AnthropicInterface(ANTHROPIC_API_KEY)
 
 
-def whisper() -> Whisper:
-    """Create an instance of the Whisper class."""
-    return Whisper(REPLICATE_API_KEY)
+def whisper() -> WhisperService:
+    """Create an instance of the WhisperService class."""
+    return WhisperService(REPLICATE_API_KEY)
+
+
+def google_voice_service() -> GoogleVoiceService:
+    """Create an instance of the GoogleVoiceService class."""
+    return GoogleVoiceService(GOOGLE_OAUTH_CONFIG)
 
 
 @router.post('/produce_code')
@@ -43,14 +52,39 @@ async def produce_code(
     )
 
 
-@router.post('/upload_audio')
-async def upload_audio(whisper: Annotated[Whisper, Depends(whisper)], audio: UploadFile) -> JSONResponse:
-    """Endpoint to receive an audio file."""
+@router.post('/recognize_speech')
+async def recognize_speech(
+    whisper: Annotated[WhisperService, Depends(whisper)],
+    speach: UploadFile,
+) -> SpeachTranscriptResponse | dict[str, str]:
+    """Recognize the speech."""
     try:
-        result = await whisper.get_text(audio.file)
-        return JSONResponse(content=result, status_code=200)
-    except Exception as e:
-        return JSONResponse(content={'error': str(e)}, status_code=500)
+        transcript = await whisper.get_voice_transcript(speach.file)
+    except Exception as err:
+        return JSONResponse(content={'error': str(err)}, status_code=500)
+
+    return SpeachTranscriptResponse(
+        transcript=transcript.text,
+        language=transcript.language,
+    )
+
+
+@router.post('/synthesize_speech')
+async def synthesize_speech(
+    body: TextToSpeechRequest,
+    google_voice: Annotated[GoogleVoiceService, Depends(google_voice_service)],
+) -> bytes | dict[str, str]:
+    """Synthesize the speech."""
+    try:
+        audio = await google_voice.text_to_speech(
+            text=body.text,
+            lang=body.lang,
+        )
+    except Exception as err:
+        return JSONResponse(content={'error': str(err)}, status_code=500)
+
+    audio_stream = BytesIO(audio)
+    return StreamingResponse(audio_stream, media_type="audio/mpeg")
 
 
 app = FastAPI()

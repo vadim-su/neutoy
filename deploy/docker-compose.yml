@@ -9,11 +9,28 @@ services:
     user: 1000:1000
 
     environment:
-      - ANTHROPIC_API_KEY
-      - REPLICATE_API_KEY
+      - ANTHROPIC_API_KEY: /run/secrets/anthropic_api_key
+      - REPLICATE_API_KEY: /run/secrets/replicate_api_key
+      - GOOGLE_OAUTH_CONFIG: /run/secrets/google_oauth_config
+
+    secrets:
+      - anthropic_api_key
+      - replicate_api_key
+      - google_oauth_config
 
     ports:
       - "8081:8081"
+
+secrets:
+  anthropic_api_key:
+    environment: ANTHROPIC_API_KEY
+
+  replicate_api_key:
+    environment: REPLICATE_API_KEY
+
+  google_oauth_config:
+    environment: GOOGLE_OAUTH_CONFIG
+
 
 networks:
   default:

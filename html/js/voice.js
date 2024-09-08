@@ -21,16 +21,16 @@ document.getElementById('record-button').addEventListener('click', async () => {
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 audioChunks = [];
                 const formData = new FormData();
-                formData.append('audio', audioBlob, 'recording.wav');
+                formData.append('speach', audioBlob, 'recording.wav');
 
                 try {
-                    const response = await fetch('api/upload_audio', {
+                    const response = await fetch('api/recognize_speech', {
                         method: 'POST',
                         body: formData
                     });
                     const body = await response.json();
                     const user_request = document.getElementById('user-request')
-                    user_request.value = body.translation
+                    user_request.value = body.transcript;
                 } catch (error) {
                     console.error('Error uploading audio:', error);
                 }
@@ -48,3 +48,20 @@ document.getElementById('record-button').addEventListener('click', async () => {
         console.error('Error accessing media devices:', error);
     }
 });
+
+export async function play_speech(text, lang) {
+    const response = await fetch('api/synthesize_speech', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            text: text,
+            lang: lang
+        })
+    });
+    const audioBlob = await response.blob();
+    const audioUrl = URL.createObjectURL(audioBlob);
+    const audio = new Audio(audioUrl);
+    audio.play();
+}
