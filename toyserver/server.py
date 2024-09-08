@@ -1,6 +1,7 @@
 from io import BytesIO
 import json
 import os
+from pathlib import Path
 from typing import Annotated
 
 from fastapi import APIRouter, Depends, FastAPI, UploadFile
@@ -11,15 +12,23 @@ from toyserver.services.anthropic import AnthropicInterface
 from toyserver.services.gspeach import GoogleVoiceService
 from toyserver.services.whisper import WhisperService
 
-# Create an instance of the FastAPI class
 router = APIRouter(prefix='/api')
 
 
 # Define a simple route
+def get_cred_value(cred_name):
+    cred = os.getenv(cred_name, '')
+    if cred:
+        return cred
+    # ls of /run/secrets will raise an exception if the directory does not exist
+    # print list of secrets
+    with Path(f'/run/secrets/{cred_name.lower()}').open() as f:
+        return f.read().strip()
 
-ANTHROPIC_API_KEY = os.getenv('ANTHROPIC_API_KEY', '')
-REPLICATE_API_KEY = os.getenv('REPLICATE_API_KEY', '')
-GOOGLE_OAUTH_CONFIG = json.loads(os.getenv('GOOGLE_OAUTH_CONFIG', ''))
+
+ANTHROPIC_API_KEY = get_cred_value('ANTHROPIC_API_KEY')
+REPLICATE_API_KEY = get_cred_value('REPLICATE_API_KEY')
+GOOGLE_OAUTH_CONFIG = json.loads(get_cred_value('GOOGLE_OAUTH_CONFIG'))
 
 if not ANTHROPIC_API_KEY or not REPLICATE_API_KEY:
     raise ValueError('Please set the ANTHROPIC_API_KEY and REPLICATE_API_KEY environment variables.')

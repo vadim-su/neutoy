@@ -1,4 +1,4 @@
-name: Deploy to Server with Deploy Key
+name: Ansible Playbook (Deploy)
 
 on:
   push:
@@ -7,36 +7,23 @@ on:
   workflow_dispatch:
 
 jobs:
-  deploy:
+  run-ansible:
     runs-on: ubuntu-latest
+
     steps:
-      - name: Checkout code
+      - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Set up SSH
-        uses: webfactory/ssh-agent@v0.9.0
+      - name: Run playbook
+        uses: dawidd6/action-ansible-playbook@v2
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          REPLICATE_API_KEY: ${{ secrets.REPLICATE_API_KEY }}
+          GOOGLE_OAUTH_CONFIG: ${{ secrets.GOOGLE_OAUTH_CONFIG }}
+
         with:
-          ssh-private-key: ${{ secrets.DEPLOY_KEY }}
-
-
-      - name: Clone or Update Repository on Server
-        run: |
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            REPO_DIR=/home/${{ secrets.SSH_USER }}/neutoy
-            if [ ! -d "$REPO_DIR" ]; then
-              # Clone the repository if it doesn't exist
-              git clone git@github.com:vadim-su/neutoy.git $REPO_DIR
-            else
-              # Pull the latest changes if the repository exists
-              cd $REPO_DIR
-              git pull origin main
-            fi
-          EOF
-
-      - name: Run Docker Compose
-        run: |
-          ssh -o StrictHostKeyChecking=no -p ${{ secrets.SSH_PORT }} ${{ secrets.SSH_USER }}@${{ secrets.SSH_HOST }} << 'EOF'
-            cd /home/${{ secrets.SSH_USER }}/neutoy
-            docker compose -f deploy/docker-compose.yml -p neutoy down
-            ANTHROPIC_API_KEY=${{ secrets.ANTHROPIC_API_KEY }} REPLICATE_API_KEY=${{ secrets.REPLICATE_API_KEY }} GOOGLE_OAUTH_CONFIG=${{ secrets.GOOGLE_OAUTH_CONFIG }} docker compose -f deploy/docker-compose.yml -p neutoy up --build -d
-          EOF
+          playbook: deploy/run_deploy.yaml
+          key: ${{ secrets.DEPLOY_KEY }}
+          options: |
+            --inventory deploy/hosts.ini
+          requirements: deploy/galaxy-requirements.yml

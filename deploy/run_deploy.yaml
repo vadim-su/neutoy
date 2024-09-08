@@ -1,0 +1,59 @@
+---
+- name: Deploy Neutoy Application
+  hosts: all
+
+  vars:
+    project_name: "neutoy"
+    repo_url: "git@github.com:vadim-su/{{ project_name }}.git"
+    repo_dir: "{{ ansible_env.HOME }}/{{ project_name }}"
+    docker_compose_file: "deploy/docker-compose.yml"
+
+    service_url: "http://localhost:8081/docs"
+
+    # Keys
+    ANTHROPIC_API_KEY: "{{ lookup('env', 'ANTHROPIC_API_KEY') }}"
+    REPLICATE_API_KEY: "{{ lookup('env', 'REPLICATE_API_KEY') }}"
+    # json file. It is created by the json-to-file action in the workflow
+    GOOGLE_OAUTH_CONFIG: "{{ lookup('env', 'GOOGLE_OAUTH_CONFIG') | to_json }}"
+
+
+  tasks:
+    - name: Ensure repository directory exists
+      ansible.builtin.file:
+        path: "{{ repo_dir }}"
+        state: directory
+
+    - name: Clone or update repository
+      ansible.builtin.git:
+        repo: "{{ repo_url }}"
+        dest: "{{ repo_dir }}"
+        version: main
+
+    - name: Deploy with Docker Compose
+      community.docker.docker_compose_v2:
+        project_src: "{{ repo_dir }}"
+        project_name: "{{ project_name }}"
+        files: "{{ docker_compose_file }}"
+        build: always
+
+      environment:
+        ANTHROPIC_API_KEY: "{{ ANTHROPIC_API_KEY }}"
+        REPLICATE_API_KEY: "{{ REPLICATE_API_KEY }}"
+        GOOGLE_OAUTH_CONFIG: "{{ GOOGLE_OAUTH_CONFIG }}"
+
+    - name: Ensure the service is accessible
+      ansible.builtin.uri:
+        url: "{{ service_url }}"
+        status_code: 200
+        timeout: 5
+        method: GET
+      register: result
+      until: result.status == 200
+      retries: 5
+      delay: 2
+
+    - name: Remove dangling Docker images
+      community.docker.docker_image:
+        name: "{{ item }}"
+        state: absent
+      loop: "{{ lookup('community.docker.docker_image', 'filter=dangling=true').images }}"
