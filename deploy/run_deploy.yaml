@@ -14,7 +14,7 @@
     ANTHROPIC_API_KEY: "{{ lookup('env', 'ANTHROPIC_API_KEY') }}"
     REPLICATE_API_KEY: "{{ lookup('env', 'REPLICATE_API_KEY') }}"
     # json file. It is created by the json-to-file action in the workflow
-    GOOGLE_OAUTH_CONFIG: "{{ lookup('env', 'GOOGLE_OAUTH_CONFIG') | to_json }}"
+    GOOGLE_OAUTH_CONFIG: "{{ lookup('env', 'GOOGLE_OAUTH_CONFIG') | string }}"
 
 
   tasks:
