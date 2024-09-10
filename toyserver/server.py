@@ -1,6 +1,6 @@
-from io import BytesIO
 import json
 import os
+from io import BytesIO
 from pathlib import Path
 from typing import Annotated
 
@@ -16,13 +16,14 @@ router = APIRouter(prefix='/api')
 
 
 # Define a simple route
-def get_cred_value(cred_name):
+def get_cred_value(cred_name: str) -> str:
+    """Get the value of the credential."""
     cred = os.getenv(cred_name, '')
     if cred:
         return cred
     # ls of /run/secrets will raise an exception if the directory does not exist
     # print list of secrets
-    with Path(f'/run/secrets/{cred_name.lower()}').open() as f:
+    with Path(f'/run/secrets/{cred_name.lower()}').open(encoding='utf-8') as f:
         return f.read().strip()
 
 
@@ -30,8 +31,6 @@ ANTHROPIC_API_KEY = get_cred_value('ANTHROPIC_API_KEY')
 REPLICATE_API_KEY = get_cred_value('REPLICATE_API_KEY')
 GOOGLE_OAUTH_CONFIG = json.loads(get_cred_value('GOOGLE_OAUTH_CONFIG'))
 
-print(type(GOOGLE_OAUTH_CONFIG))
-print(GOOGLE_OAUTH_CONFIG)
 
 if not ANTHROPIC_API_KEY or not REPLICATE_API_KEY:
     raise ValueError('Please set the ANTHROPIC_API_KEY and REPLICATE_API_KEY environment variables.')
@@ -96,7 +95,7 @@ async def synthesize_speech(
         return JSONResponse(content={'error': str(err)}, status_code=500)
 
     audio_stream = BytesIO(audio)
-    return StreamingResponse(audio_stream, media_type="audio/mpeg")
+    return StreamingResponse(audio_stream, media_type='audio/mpeg')
 
 
 app = FastAPI()
