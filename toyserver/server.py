@@ -30,6 +30,9 @@ ANTHROPIC_API_KEY = get_cred_value('ANTHROPIC_API_KEY')
 REPLICATE_API_KEY = get_cred_value('REPLICATE_API_KEY')
 GOOGLE_OAUTH_CONFIG = json.loads(get_cred_value('GOOGLE_OAUTH_CONFIG'))
 
+print(type(GOOGLE_OAUTH_CONFIG))
+print(GOOGLE_OAUTH_CONFIG)
+
 if not ANTHROPIC_API_KEY or not REPLICATE_API_KEY:
     raise ValueError('Please set the ANTHROPIC_API_KEY and REPLICATE_API_KEY environment variables.')
 
