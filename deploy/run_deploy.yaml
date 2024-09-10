@@ -56,4 +56,5 @@
       community.docker.docker_image:
         name: "{{ item }}"
         state: absent
-      loop: "{{ lookup('community.docker.docker_image', 'filter=dangling=true').images }}"
+      loop: "{{ dangling_images.images | map(attribute='RepoTags') | flatten }}"
+      when: dangling_images.images | length > 0
