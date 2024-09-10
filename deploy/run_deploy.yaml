@@ -53,8 +53,7 @@
       delay: 2
 
     - name: Remove dangling Docker images
-      community.docker.docker_image:
-        name: "{{ item }}"
-        state: absent
-      loop: "{{ dangling_images.images | map(attribute='RepoTags') | flatten }}"
-      when: dangling_images.images | length > 0
+      community.docker.docker_prune:
+        images: true
+        images_filters:
+          dangling: true
