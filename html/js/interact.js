@@ -13,7 +13,11 @@ document.addEventListener('DOMContentLoaded', () => {
     touchButton.addEventListener('mousedown', playTapSound);
     speakButton.addEventListener('mousedown', playTapSound);
 
-    speakButton.addEventListener('click', () => {
+    speakButton.addEventListener('mousedown', () => {
+        recordHandler();
+    });
+
+    speakButton.addEventListener('mouseup', () => {
         recordHandler();
     });
 
