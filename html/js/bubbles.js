@@ -1,5 +1,5 @@
 export function createBubble(text, isRight) {
-  const bubblesContainer = document.getElementById("bubbles");
+  let bubblesContainer = document.getElementById("bubbles");
 
   if (!bubblesContainer) {
     console.error("Container with id 'bubbles' not found");
@@ -9,7 +9,6 @@ export function createBubble(text, isRight) {
   const bubble = document.createElement("div");
   bubble.className = `bubble ${isRight ? "bubble-right" : "bubble-left"}`;
   bubble.textContent = text;
-
   bubblesContainer.appendChild(bubble);
 
   // Trigger reflow to ensure the animation works
