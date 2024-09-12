@@ -53,7 +53,7 @@ export async function submitButtonHandler(submitButton) {
   reason_text.value = resp_body.reason;
   voiceover_text.value = resp_body.voice_over;
   code_text.value = resp_body.code;
-  createBubble(resp_body.voice_over, false);
+  createBubble(resp_body.voice_over, true);
   play_speech(resp_body.voice_over, resp_body.lang);
   run_code(resp_body.code);
   if (submitButton) {
