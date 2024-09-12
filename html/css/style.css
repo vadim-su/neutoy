@@ -1,9 +1,10 @@
-html, body {
+html,
+body {
     margin: 0;
     padding: 0;
     height: 100%;
     overflow: hidden;
-    font-family: "Ubuntu", sans-serif;
+    font-family: "Roboto", sans-serif;
 }
 
 body::before {
@@ -13,7 +14,7 @@ body::before {
     left: 0;
     width: 100%;
     height: 100%;
-    background-image: url('../assets/bg.jpg');
+    background-image: url("../assets/bg.jpg");
     background-position: center center;
     background-repeat: no-repeat;
     background-size: auto;
@@ -35,8 +36,8 @@ body::before {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: 
-        translate(-219px, -3px) rotateX(0deg) rotateZ(0deg) scale(2.3) skew(0deg, 14deg);
+    transform: translate(-219px, -3px) rotateX(0deg) rotateZ(0deg) scale(2.3)
+        skew(0deg, 14deg);
     display: grid;
     grid-template-columns: repeat(10, 12px);
     grid-template-rows: repeat(10, 12px);
@@ -55,8 +56,8 @@ body::before {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: 
-        translate(149px, -21px) rotateX(19.3deg) rotateZ(0deg) scale(1, 1.8) skew(0deg, -18deg);
+    transform: translate(149px, -21px) rotateX(19.3deg) rotateZ(0deg)
+        scale(1, 1.8) skew(0deg, -18deg);
     padding: 60px;
     font-size: 0px;
     font-weight: bold;
@@ -65,11 +66,11 @@ body::before {
     background-image: linear-gradient(to bottom, #5a5a5a, #4a4a4a);
     border: 1px solid #3a3a3a;
     border-radius: 5px;
-    box-shadow: 
-        0 1px 0 rgba(255,255,255,0.2) inset,
-        0 -1px 0 rgba(0,0,0,0.2) inset,
-        0 4px 6px rgba(0,0,0,0.3);
-    text-shadow: 0 -1px 0 rgba(0,0,0,0.4);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.2) inset,
+        0 -1px 0 rgba(0, 0, 0, 0.2) inset,
+        0 4px 6px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
     transition: all 0.1s ease;
     cursor: pointer;
 }
@@ -80,19 +81,18 @@ body::before {
 
 #touch_button:active {
     background-image: linear-gradient(to bottom, #5a5a5a, #5a5a5a);
-    box-shadow: 
-        0 1px 0 rgba(255,255,255,0.2) inset,
-        0 -1px 0 rgba(0,0,0,0.2) inset,
-        0 1px 2px rgba(0,0,0,0.2) inset;
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.2) inset,
+        0 -1px 0 rgba(0, 0, 0, 0.2) inset,
+        0 1px 2px rgba(0, 0, 0, 0.2) inset;
 }
 
- 
 #speak_button {
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: 
-        translate(-15px, -225px) rotateX(55.8deg) rotateZ(0deg) scale(0.45) skew(0deg, 0deg);
+    transform: translate(-15px, -225px) rotateX(55.8deg) rotateZ(0deg)
+        scale(0.45) skew(0deg, 0deg);
     padding: 60px;
     font-size: 0px;
     font-weight: bold;
@@ -101,11 +101,11 @@ body::before {
     background-image: linear-gradient(to bottom, #5a5a5a, #4a4a4a);
     border: 1px solid #3a3a3a;
     border-radius: 5px;
-    box-shadow: 
-        0 1px 0 rgba(255,255,255,0.2) inset,
-        0 -1px 0 rgba(0,0,0,0.2) inset,
-        0 4px 6px rgba(0,0,0,0.3);
-    text-shadow: 0 -1px 0 rgba(0,0,0,0.4);
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.2) inset,
+        0 -1px 0 rgba(0, 0, 0, 0.2) inset,
+        0 4px 6px rgba(0, 0, 0, 0.3);
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.4);
     transition: all 0.1s ease;
     cursor: pointer;
     border-radius: 200px;
@@ -117,58 +117,76 @@ body::before {
 
 #speak_button:active {
     background-image: linear-gradient(to bottom, #5a5a5a, #5a5a5a);
-    box-shadow: 
-        0 1px 0 rgba(255,255,255,0.2) inset,
-        0 -1px 0 rgba(0,0,0,0.2) inset,
-        0 1px 2px rgba(0,0,0,0.2) inset;
+    box-shadow:
+        0 1px 0 rgba(255, 255, 255, 0.2) inset,
+        0 -1px 0 rgba(0, 0, 0, 0.2) inset,
+        0 1px 2px rgba(0, 0, 0, 0.2) inset;
 }
 
-#clickable-area {
+#bubbles {
     position: fixed;
-    left: 20px;
-    bottom: 20px;
-    width: 50px;
-    height: 50px;
-    background-color: #4a4a4a;
-    border-radius: 50%;
-    cursor: pointer;
-    z-index: 1000;
+    top: 0;
+    left: 50%;
+    transform: translateX(-53%);
+    width: 80%;
+    max-width: 800px;
+    height: 100vh;
+    overflow-y: auto;
+    padding: 20px;
+    box-sizing: border-box;
+    /* background-color: rgba(0, 0, 0, 0.1); */
 }
-
 
 .bubble {
-    position: fixed;
-    top: 10%;
-    background-color: rgba(255, 255, 255, 0.8);
-    border-radius: 10px;
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 20px;
     padding: 15px 25px;
-    font-family: 'Ubuntu', sans-serif;
-    font-size: 24px;
+    font-family: "Roboto", sans-serif;
+    font-size: 22px;
+    font-weight: 400;
+    font-style: normal;
     opacity: 0;
     transition: all 0.5s ease-out;
-    pointer-events: none;
-    width: 40%;
-    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    max-width: 70%;
 }
 
 .bubble-right {
-    left: 35%;
+    margin-left: auto;
     text-align: right;
+    transform: translateX(50px);
 }
 
 .bubble-left {
-    right: 35%;
+    margin-right: auto;
     text-align: left;
+    transform: translateX(-50px);
 }
 
 .bubble.show {
     opacity: 1;
-    transform: translateY(-20px);
+    transform: translateX(0);
 }
 
 .bubble.hide {
     opacity: 0;
-    transform: translateY(-40px);
+    transform: translateY(-20px);
+}
+
+@keyframes gentle-bounce {
+    0%,
+    100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.bubble.show {
+    animation: gentle-bounce 0.5s ease-out;
 }
 
 .toggle-button {
@@ -206,8 +224,6 @@ body::before {
     left: 0;
 }
 
-
-
 textarea {
     height: 150px;
     width: 400px;
@@ -225,8 +241,9 @@ textarea[readonly] {
     background-color: #e9e9e9;
 }
 
-
-#submit-button, #record-button, #rerun-button {
+#submit-button,
+#record-button,
+#rerun-button {
     align-self: flex-start;
     /* Align the button to the start of the container */
     padding: 10px 20px;
