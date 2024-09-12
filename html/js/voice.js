@@ -1,11 +1,22 @@
+import { submitButtonHandler } from "./submit.js    ";
+
 let mediaRecorder;
 let audioChunks = [];
+let recordIsOn = false;
 
-document.getElementById('record-button').addEventListener('click', async () => {
+
+document.addEventListener('DOMContentLoaded', () => {
     const recordButton = document.getElementById('record-button');
+
+    recordButton.addEventListener('click', async () => {
+        await recordHandler(recordButton);
+    });
+});
+
+export async function recordHandler() {
     try {
-        if (recordButton.textContent === 'Start Recording') {
-            // Start recording
+        if (!recordIsOn) {
+            recordIsOn = true;
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             mediaRecorder = new MediaRecorder(stream);
             mediaRecorder.start();
@@ -15,9 +26,7 @@ document.getElementById('record-button').addEventListener('click', async () => {
             };
 
             mediaRecorder.onstop = async () => {
-                recordButton.textContent = 'Uploading...';
-                recordButton.disabled = true;
-
+                recordIsOn = false;
                 const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
                 audioChunks = [];
                 const formData = new FormData();
@@ -29,25 +38,21 @@ document.getElementById('record-button').addEventListener('click', async () => {
                         body: formData
                     });
                     const body = await response.json();
-                    const user_request = document.getElementById('user-request')
+                    const user_request = document.getElementById('user-request');
                     user_request.value = body.transcript;
                 } catch (error) {
                     console.error('Error uploading audio:', error);
                 }
                 stream.getTracks().forEach(track => track.stop());
-                recordButton.textContent = 'Start Recording';
-                recordButton.disabled = false;
-
+                submitButtonHandler();
             };
-
-            recordButton.textContent = 'Stop Recording';
         } else {
             mediaRecorder.stop();
         }
     } catch (error) {
         console.error('Error accessing media devices:', error);
     }
-});
+}
 
 export async function play_speech(text, lang) {
     const response = await fetch('api/synthesize_speech', {
