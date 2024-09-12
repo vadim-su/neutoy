@@ -64,6 +64,8 @@ export async function submitButtonHandler(submitButton) {
 function get_prompts() {
   const system_prompt = document.getElementById("system-prompt");
   const user_request = document.getElementById("user-request");
+  createBubble(user_request.value, true);
+
   return {
     system_prompt: system_prompt.value,
     user_request: user_request.value,
