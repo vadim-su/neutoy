@@ -70,7 +70,7 @@ function get_prompts() {
   return {
     system_prompt: system_prompt.value,
     user_request: user_request.value,
-    user_code: user_request.value,
+    user_code: user_code.value,
   };
 }
 
