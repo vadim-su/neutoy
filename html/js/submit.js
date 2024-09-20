@@ -37,7 +37,7 @@ export async function submitButtonHandler(submitButton) {
     },
     body: JSON.stringify({
       system_prompt: system_prompt,
-      user_request: user_request + "\n\n" + user_code,
+      user_request: user_request + "\n\n **My code is:**\n\n " + user_code,
     }),
   });
 
