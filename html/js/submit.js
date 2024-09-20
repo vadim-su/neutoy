@@ -24,7 +24,7 @@ export async function submitButtonHandler(submitButton) {
   if (submitButton) {
     submitButton.disabled = true;
   }
-  const { system_prompt, user_request } = get_prompts();
+  const { system_prompt, user_request, user_code } = get_prompts();
 
   const reason_text = document.getElementById("reasoning-text");
   const voiceover_text = document.getElementById("voiceover-text");
