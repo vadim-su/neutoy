@@ -210,13 +210,13 @@ body::before {
     position: fixed;
     top: 0;
     left: -470px; /* Start off-screen */
-    width: 470px;
+    width: 410px;
     height: 100%;
     background-color: rgba(255, 255, 255, 0.7);
     padding: 20px;
     box-sizing: border-box;
     overflow-y: auto;
-    transition: left 0.3s ease-in-out;
+    transition: left 0.1s ease-in-out;
     z-index: 999;
 }
 
@@ -226,9 +226,9 @@ body::before {
 
 textarea {
     height: 100px;
-    width: 400px;
+    width: 360px;
     /* Adjust the height as needed */
-    padding: 10px;
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 5px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
