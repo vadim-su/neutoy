@@ -225,7 +225,7 @@ body::before {
 }
 
 textarea {
-    height: 120px;
+    height: 100px;
     width: 400px;
     /* Adjust the height as needed */
     padding: 10px;
