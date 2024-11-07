@@ -6,6 +6,29 @@ let audioChunks = [];
 let recordingStream = null;
 let isRecording = false;  // Add state tracking
 
+
+let audioContext = null;
+
+// Initialize audio context on first touch
+async function initAudioContext() {
+    try {
+        if (!audioContext) {
+            console.log('Creating new AudioContext');
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            console.log('AudioContext state:', audioContext.state);
+            
+            if (audioContext.state === 'suspended') {
+                console.log('Resuming AudioContext');
+                await audioContext.resume();
+                console.log('AudioContext resumed, new state:', audioContext.state);
+            }
+        }
+    } catch (error) {
+        console.error('Error initializing AudioContext:', error);
+    }
+}
+
+
 export async function recordHandler(startRecording) {
     try {
         if (startRecording && !isRecording) {  // Only start if not already recording
@@ -65,8 +88,13 @@ export async function recordHandler(startRecording) {
     }
 }
 
+// Modified play_speech function
 export async function play_speech(text, lang) {
+    console.log('Starting play_speech with text:', text);
     try {
+        await initAudioContext();
+        
+        console.log('Fetching speech from API');
         const response = await fetch("api/synthesize_speech", {
             method: "POST",
             headers: {
@@ -77,57 +105,86 @@ export async function play_speech(text, lang) {
                 lang: lang,
             }),
         });
-        
+        console.log('API response received');
+
         const audioBlob = await response.blob();
+        console.log('Audio blob size:', audioBlob.size);
+        
         const audioUrl = URL.createObjectURL(audioBlob);
-        const audio = new Audio(audioUrl);
+        const audio = new Audio();
         
-        // Add error handling
-        audio.onerror = (e) => {
-            console.error('Audio playback error:', e);
-        };
-
-        // Handle mobile autoplay restrictions
-        const playAudio = async () => {
-            try {
-                // Set audio context to resume after user interaction
-                if (window.AudioContext || window.webkitAudioContext) {
-                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-                    if (audioContext.state === 'suspended') {
-                        await audioContext.resume();
-                    }
-                }
-                
-                // Play with user gesture requirement handling
-                const playPromise = audio.play();
-                if (playPromise !== undefined) {
-                    playPromise
-                        .then(() => {
-                            console.log('Audio playback started successfully');
-                        })
-                        .catch(error => {
-                            console.error('Playback error:', error);
-                            // If autoplay was prevented, we can show a play button or retry
-                            if (error.name === 'NotAllowedError') {
-                                console.log('Autoplay prevented - requires user interaction');
-                            }
-                        });
-                }
-            } catch (error) {
-                console.error('Error in playAudio:', error);
-            }
-        };
-
-        // Ensure audio can play on mobile
-        audio.load();
-        await playAudio();
+        // Set up event listeners before setting source
+        audio.addEventListener('canplay', () => {
+            console.log('Audio can play');
+        });
         
-        // Clean up URL after playback
-        audio.onended = () => {
+        audio.addEventListener('playing', () => {
+            console.log('Audio started playing');
+        });
+        
+        audio.addEventListener('error', (e) => {
+            console.error('Audio error:', e);
+            console.error('Error code:', audio.error ? audio.error.code : 'unknown');
+        });
+        
+        audio.addEventListener('ended', () => {
+            console.log('Audio playback ended');
             URL.revokeObjectURL(audioUrl);
-        };
+        });
+
+        // Try to play immediately after loading
+        audio.addEventListener('loadeddata', async () => {
+            console.log('Audio data loaded, attempting to play');
+            try {
+                await audio.play();
+                console.log('Play command issued successfully');
+            } catch (error) {
+                console.error('Error during play:', error);
+                
+                // Fallback for mobile: create and click a temporary button
+                if (error.name === 'NotAllowedError') {
+                    console.log('Attempting mobile fallback playback');
+                    const tempButton = document.createElement('button');
+                    tempButton.style.position = 'fixed';
+                    tempButton.style.top = '0';
+                    tempButton.style.zIndex = '9999';
+                    tempButton.textContent = 'Tap to play audio';
+                    
+                    tempButton.addEventListener('touchend', async () => {
+                        try {
+                            await audio.play();
+                            tempButton.remove();
+                        } catch (e) {
+                            console.error('Fallback playback failed:', e);
+                        }
+                    });
+                    
+                    document.body.appendChild(tempButton);
+                }
+            }
+        });
+
+        // Set the source last
+        audio.src = audioUrl;
+        audio.load();
 
     } catch (error) {
-        console.error('Error in play_speech:', error);
+        console.error('Fatal error in play_speech:', error);
     }
 }
+
+document.addEventListener('DOMContentLoaded', () => {
+    // Initialize audio on any user interaction
+    const initAudioOnInteraction = async () => {
+        console.log('User interaction detected');
+        await initAudioContext();
+        // Remove listeners after first interaction
+        ['touchstart', 'touchend', 'click', 'mousedown'].forEach(event => {
+            document.removeEventListener(event, initAudioOnInteraction);
+        });
+    };
+
+    ['touchstart', 'touchend', 'click', 'mousedown'].forEach(event => {
+        document.addEventListener(event, initAudioOnInteraction);
+    });
+});
