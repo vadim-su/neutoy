@@ -8,23 +8,29 @@ let isRecording = false;  // Add state tracking
 
 
 let audioContext = null;
+let hasAudioPermissions = false;
 
-// Initialize audio context on first touch
-async function initAudioContext() {
+// Initialize audio context and request permissions
+async function initAudioSystem() {
     try {
+        // Create audio context if not exists
         if (!audioContext) {
-            console.log('Creating new AudioContext');
             audioContext = new (window.AudioContext || window.webkitAudioContext)();
-            console.log('AudioContext state:', audioContext.state);
-            
-            if (audioContext.state === 'suspended') {
-                console.log('Resuming AudioContext');
-                await audioContext.resume();
-                console.log('AudioContext resumed, new state:', audioContext.state);
-            }
+            await audioContext.resume();
         }
+        
+        // Request both microphone and audio playback permissions together
+        if (!hasAudioPermissions) {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            hasAudioPermissions = true;
+            // Stop the stream right away as we just needed it for permissions
+            stream.getTracks().forEach(track => track.stop());
+        }
+        
+        return true;
     } catch (error) {
-        console.error('Error initializing AudioContext:', error);
+        console.error('Error initializing audio system:', error);
+        return false;
     }
 }
 
@@ -32,6 +38,9 @@ async function initAudioContext() {
 export async function recordHandler(startRecording) {
     try {
         if (startRecording && !isRecording) {  // Only start if not already recording
+            // Initialize audio system first
+            await initAudioSystem();
+
             isRecording = true;
             // Start recording
             audioChunks = []; // Clear previous chunks
@@ -92,7 +101,9 @@ export async function recordHandler(startRecording) {
 export async function play_speech(text, lang) {
     console.log('Starting play_speech with text:', text);
     try {
-        await initAudioContext();
+        if (!hasAudioPermissions) {
+            await initAudioSystem();
+        }
         
         console.log('Fetching speech from API');
         const response = await fetch("api/synthesize_speech", {
