@@ -9,6 +9,18 @@ let audioContext = null;
 let hasAudioPermissions = false;
 
 
+export async function forceCleanupRecording() {
+    isRecording = false;
+    if (mediaRecorder && mediaRecorder.state !== 'inactive') {
+        mediaRecorder.stop();
+    }
+    if (recordingStream) {
+        recordingStream.getTracks().forEach(track => track.stop());
+        recordingStream = null;
+    }
+}
+
+
 // Initialize audio context and request permissions
 async function initAudioSystem() {
     try {

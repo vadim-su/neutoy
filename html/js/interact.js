@@ -1,3 +1,4 @@
+// interact.js
 import { recordHandler } from './voice.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -6,45 +7,70 @@ document.addEventListener('DOMContentLoaded', () => {
     const tapSound = document.getElementById('tapSound');
 
     function playTapSound() {
-        tapSound.currentTime = 0; // Reset the audio to the beginning
+        tapSound.currentTime = 0;
         tapSound.play();
     }
 
-    touchButton.addEventListener('mousedown', playTapSound);
+    // Function to ensure recording stops
+    const forceStopRecording = async () => {
+        console.log('Force stopping recording');
+        await recordHandler(false);
+    };
 
-    // When button is PRESSED DOWN - startRecording = true
+    // Desktop events
     speakButton.addEventListener('mousedown', async (e) => {
         e.preventDefault();
-        console.log('Button pressed - starting recording'); // Debug log
-        await recordHandler(true);  // HERE - startRecording is TRUE
-    });
-    
-    // When button is RELEASED - startRecording = false
-    speakButton.addEventListener('mouseup', async (e) => {
-        e.preventDefault();
-        console.log('Button released - stopping recording'); // Debug log
-        await recordHandler(false);  // HERE - startRecording is FALSE
+        playTapSound();
+        await recordHandler(true);
     });
 
-    // Same for touch events on mobile
-    speakButton.addEventListener('touchstart', async (e) => {
+    speakButton.addEventListener('mouseup', async (e) => {
         e.preventDefault();
-        console.log('Touch started - starting recording'); // Debug log
-        await recordHandler(true);  // HERE - startRecording is TRUE
+        await recordHandler(false);
     });
+
+    // Mobile touch events with additional safety
+    speakButton.addEventListener('touchstart', async (e) => {
+        e.preventDefault(); // Prevent default to avoid double-firing
+        playTapSound();
+        await recordHandler(true);
+    }, { passive: false }); // Ensure preventDefault works
 
     speakButton.addEventListener('touchend', async (e) => {
         e.preventDefault();
-        console.log('Touch ended - stopping recording'); // Debug log
-        await recordHandler(false);  // HERE - startRecording is FALSE
+        await recordHandler(false);
+    }, { passive: false });
+
+    // Additional safety events for mobile
+    speakButton.addEventListener('touchcancel', async (e) => {
+        e.preventDefault();
+        await forceStopRecording();
+    }, { passive: false });
+
+    // If touch moves out of button
+    speakButton.addEventListener('touchmove', async (e) => {
+        const touch = e.touches[0];
+        const buttonRect = speakButton.getBoundingClientRect();
+        
+        // If touch moves outside button bounds
+        if (touch.clientX < buttonRect.left || 
+            touch.clientX > buttonRect.right || 
+            touch.clientY < buttonRect.top || 
+            touch.clientY > buttonRect.bottom) {
+            await forceStopRecording();
+        }
+    }, { passive: true });
+
+    // Global safety net
+    document.addEventListener('visibilitychange', async () => {
+        if (document.hidden) {
+            await forceStopRecording();
+        }
     });
 
-    speakButton.addEventListener('mouseup', async () => {
-        await recordHandler(false); // Stop recording and send
-    });
-
-    speakButton.addEventListener('mouseleave', async () => {
-        await recordHandler(false); // Stop recording if mouse leaves button
+    // Backup cleanup when page is unloaded
+    window.addEventListener('beforeunload', async () => {
+        await forceStopRecording();
     });
 
     const infoToggle = document.getElementById('info-toggle');
