@@ -11,14 +11,40 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     touchButton.addEventListener('mousedown', playTapSound);
-    speakButton.addEventListener('mousedown', playTapSound);
 
-    speakButton.addEventListener('mousedown', () => {
-        recordHandler();
+    // When button is PRESSED DOWN - startRecording = true
+    speakButton.addEventListener('mousedown', async (e) => {
+        e.preventDefault();
+        console.log('Button pressed - starting recording'); // Debug log
+        await recordHandler(true);  // HERE - startRecording is TRUE
+    });
+    
+    // When button is RELEASED - startRecording = false
+    speakButton.addEventListener('mouseup', async (e) => {
+        e.preventDefault();
+        console.log('Button released - stopping recording'); // Debug log
+        await recordHandler(false);  // HERE - startRecording is FALSE
     });
 
-    speakButton.addEventListener('mouseup', () => {
-        recordHandler();
+    // Same for touch events on mobile
+    speakButton.addEventListener('touchstart', async (e) => {
+        e.preventDefault();
+        console.log('Touch started - starting recording'); // Debug log
+        await recordHandler(true);  // HERE - startRecording is TRUE
+    });
+
+    speakButton.addEventListener('touchend', async (e) => {
+        e.preventDefault();
+        console.log('Touch ended - stopping recording'); // Debug log
+        await recordHandler(false);  // HERE - startRecording is FALSE
+    });
+
+    speakButton.addEventListener('mouseup', async () => {
+        await recordHandler(false); // Stop recording and send
+    });
+
+    speakButton.addEventListener('mouseleave', async () => {
+        await recordHandler(false); // Stop recording if mouse leaves button
     });
 
     const infoToggle = document.getElementById('info-toggle');
