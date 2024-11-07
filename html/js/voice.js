@@ -4,11 +4,10 @@ import { createBubble } from "./bubbles.js";
 let mediaRecorder;
 let audioChunks = [];
 let recordingStream = null;
-let isRecording = false;  // Add state tracking
-
-
+let isRecording = false;
 let audioContext = null;
 let hasAudioPermissions = false;
+
 
 // Initialize audio context and request permissions
 async function initAudioSystem() {
@@ -188,7 +187,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize audio on any user interaction
     const initAudioOnInteraction = async () => {
         console.log('User interaction detected');
-        await initAudioContext();
+        await initAudioSystem(); // Changed from initAudioContext to initAudioSystem
         // Remove listeners after first interaction
         ['touchstart', 'touchend', 'click', 'mousedown'].forEach(event => {
             document.removeEventListener(event, initAudioOnInteraction);
