@@ -30,15 +30,15 @@ async function initAudioSystem() {
             await audioContext.resume();
         }
         
-        // Request both microphone and audio playback permissions together
+        // Only request permissions if we don't have them
         if (!hasAudioPermissions) {
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
             hasAudioPermissions = true;
-            // Stop the stream right away as we just needed it for permissions
             stream.getTracks().forEach(track => track.stop());
         }
         
         return true;
+
     } catch (error) {
         console.error('Error initializing audio system:', error);
         return false;
@@ -49,10 +49,10 @@ async function initAudioSystem() {
 export async function recordHandler(startRecording) {
     try {
         if (startRecording && !isRecording) {  // Only start if not already recording
-            // Initialize audio system first
-            await initAudioSystem();
-
+            console.log('Starting recording');
+            await initAudioSystem();  // Initialize only when starting recording
             isRecording = true;
+
             // Start recording
             audioChunks = []; // Clear previous chunks
             const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
