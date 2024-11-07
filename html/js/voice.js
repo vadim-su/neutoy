@@ -66,18 +66,68 @@ export async function recordHandler(startRecording) {
 }
 
 export async function play_speech(text, lang) {
-    const response = await fetch("api/synthesize_speech", {
-        method: "POST",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            text: text,
-            lang: lang,
-        }),
-    });
-    const audioBlob = await response.blob();
-    const audioUrl = URL.createObjectURL(audioBlob);
-    const audio = new Audio(audioUrl);
-    audio.play();
+    try {
+        const response = await fetch("api/synthesize_speech", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                text: text,
+                lang: lang,
+            }),
+        });
+        
+        const audioBlob = await response.blob();
+        const audioUrl = URL.createObjectURL(audioBlob);
+        const audio = new Audio(audioUrl);
+        
+        // Add error handling
+        audio.onerror = (e) => {
+            console.error('Audio playback error:', e);
+        };
+
+        // Handle mobile autoplay restrictions
+        const playAudio = async () => {
+            try {
+                // Set audio context to resume after user interaction
+                if (window.AudioContext || window.webkitAudioContext) {
+                    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+                    if (audioContext.state === 'suspended') {
+                        await audioContext.resume();
+                    }
+                }
+                
+                // Play with user gesture requirement handling
+                const playPromise = audio.play();
+                if (playPromise !== undefined) {
+                    playPromise
+                        .then(() => {
+                            console.log('Audio playback started successfully');
+                        })
+                        .catch(error => {
+                            console.error('Playback error:', error);
+                            // If autoplay was prevented, we can show a play button or retry
+                            if (error.name === 'NotAllowedError') {
+                                console.log('Autoplay prevented - requires user interaction');
+                            }
+                        });
+                }
+            } catch (error) {
+                console.error('Error in playAudio:', error);
+            }
+        };
+
+        // Ensure audio can play on mobile
+        audio.load();
+        await playAudio();
+        
+        // Clean up URL after playback
+        audio.onended = () => {
+            URL.revokeObjectURL(audioUrl);
+        };
+
+    } catch (error) {
+        console.error('Error in play_speech:', error);
+    }
 }
