@@ -18,6 +18,7 @@ jobs:
         uses: dawidd6/action-ansible-playbook@v2
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           REPLICATE_API_KEY: ${{ secrets.REPLICATE_API_KEY }}
           GOOGLE_OAUTH_CONFIG: ${{ secrets.GOOGLE_OAUTH_CONFIG }}
 
