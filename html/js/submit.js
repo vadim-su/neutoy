@@ -24,16 +24,18 @@ export async function submitButtonHandler(submitButton, with_code) {
   if (submitButton) {
     submitButton.disabled = true;
   }
+
+  const code_text = document.getElementById("code-text");
+
+  if (with_code) {
+    document.getElementById("user-code").value = code_text.value;
+  }
+
   const { system_prompt, user_request, user_code } = get_prompts();
 
   const reason_text = document.getElementById("reasoning-text");
   const voiceover_text = document.getElementById("voiceover-text");
 
-  const code_text = document.getElementById("code-text");
-
-  if (with_code) {
-    code_text.value = user_code;
-  }
 
   const response = await fetch(LLM_URL, {
     method: "POST",
