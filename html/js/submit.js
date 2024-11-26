@@ -20,7 +20,7 @@ const allowedFunctions = {
   cleanup,
 };
 
-export async function submitButtonHandler(submitButton) {
+export async function submitButtonHandler(submitButton, with_code) {
   if (submitButton) {
     submitButton.disabled = true;
   }
@@ -28,7 +28,12 @@ export async function submitButtonHandler(submitButton) {
 
   const reason_text = document.getElementById("reasoning-text");
   const voiceover_text = document.getElementById("voiceover-text");
+
   const code_text = document.getElementById("code-text");
+
+  if (with_code) {
+    code_text.value = user_code;
+  }
 
   const response = await fetch(LLM_URL, {
     method: "POST",
@@ -79,8 +84,8 @@ function run_code(code) {
   const wrap = new Function(
     "functions",
     `with (functions) {
-                ${code}
-            }`,
+        ${code}
+    }`,
   );
 
   return wrap(allowedFunctions);

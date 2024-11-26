@@ -7,6 +7,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const submit_button = document.getElementById('submit-button');
     submit_button.addEventListener('click', () => submitButtonHandler(submit_button));
 
+
+    const submit_button_with_code = document.getElementById('submit-button-with-code');
+    submit_button_with_code.addEventListener('click', () => submitButtonHandler(submit_button_with_code));
+
     const rerun_button = document.getElementById('rerun-button');
     rerun_button.addEventListener('click', rerun_button_handler);
 });
