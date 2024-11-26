@@ -35,6 +35,7 @@ export async function submitButtonHandler(submitButton, with_code) {
 
   const reason_text = document.getElementById("reasoning-text");
   const voiceover_text = document.getElementById("voiceover-text");
+  const model_list = document.getElementById("llm-model");
 
 
   const response = await fetch(LLM_URL, {
@@ -45,6 +46,7 @@ export async function submitButtonHandler(submitButton, with_code) {
     body: JSON.stringify({
       system_prompt: system_prompt,
       user_request: user_request + "\n\n **My code is:**\n\n " + user_code,
+      model: model_list.value,
     }),
   });
 

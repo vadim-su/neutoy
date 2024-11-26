@@ -8,7 +8,7 @@ from anthropic.types.message_param import MessageParam
 from anthropic.types.tool_param import ToolParam
 from anthropic.types.tool_use_block import ToolUseBlock
 
-from toyserver.models import LlmResponse
+from toyserver.models import LlmModel, LlmResponse
 
 
 class AnthropicInterface:
@@ -21,7 +21,7 @@ class AnthropicInterface:
         self,
         system_prompt: str,
         user_request: str,
-        model: str = 'claude-3-5-sonnet-20240620',
+        model: LlmModel,
     ) -> LlmResponse:
         """Make a completion request to the Anthropic API."""
         raw_resp = await self.client.messages.create(

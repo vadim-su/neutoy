@@ -1,13 +1,26 @@
-from pydantic import BaseModel
+import enum
+from pydantic import BaseModel, Field
 
 
-class LlmResponse(BaseModel, extra='allow'):
+class LlmResponse(BaseModel, arbitrary_types_allowed=True):
     """Response from the language model."""
 
-    reason: str
-    voice_over: str
-    lang: str
-    code: str
+    reason: str = Field(description='Reasoning of your decisions.')
+    voice_over: str = Field(
+        description='Voice over to explain the reasoning for a kid.',
+    )
+    lang: str = Field(description='Language of the voice over, 2 letter code.')
+    code: str = Field(description='Javascript code to control the device.')
+
+
+@enum.unique
+class LlmModel(enum.StrEnum):
+    """Language model for the code generation."""
+
+    ANTHROPIC_CLAUDE_3_5 = 'claude-3-5-sonnet-latest'
+    ANTHROPIC_HAIKU_3_5 = 'claude-3-5-haiku-latest'
+    OPENAI_GPT4O = 'gpt-4o'
+    OPENAI_GPT4O_MINI = 'gpt-4o-mini'
 
 
 class LlmRequest(BaseModel):
@@ -15,7 +28,7 @@ class LlmRequest(BaseModel):
 
     system_prompt: str
     user_request: str
-    model: str = 'claude-3-5-sonnet-20240620'
+    model: LlmModel = LlmModel.ANTHROPIC_CLAUDE_3_5
 
 
 class SpeachTranscriptResponse(BaseModel):

@@ -6,10 +6,12 @@ from typing import Annotated
 
 from fastapi import APIRouter, Depends, FastAPI, UploadFile
 from fastapi.responses import JSONResponse, StreamingResponse
+from fastapi.staticfiles import StaticFiles
 
 from toyserver.models import LlmRequest, LlmResponse, SpeachTranscriptResponse, TextToSpeechRequest
 from toyserver.services.anthropic import AnthropicInterface
 from toyserver.services.gspeach import GoogleVoiceService
+from toyserver.services.openai import OpenaiInterface
 from toyserver.services.whisper import WhisperService
 
 router = APIRouter(prefix='/api')
@@ -28,17 +30,24 @@ def get_cred_value(cred_name: str) -> str:
 
 
 ANTHROPIC_API_KEY = get_cred_value('ANTHROPIC_API_KEY')
+OPENAI_API_KEY = get_cred_value('OPENAI_API_KEY')
 REPLICATE_API_KEY = get_cred_value('REPLICATE_API_KEY')
 GOOGLE_OAUTH_CONFIG = json.loads(get_cred_value('GOOGLE_OAUTH_CONFIG'))
 
 
-if not ANTHROPIC_API_KEY or not REPLICATE_API_KEY:
-    raise ValueError('Please set the ANTHROPIC_API_KEY and REPLICATE_API_KEY environment variables.')
+if not ANTHROPIC_API_KEY or not OPENAI_API_KEY or not REPLICATE_API_KEY:
+    raise ValueError(
+        'Please set the ANTHROPIC_API_KEY, OPENAI_API_KEY and REPLICATE_API_KEY environment variables.')
 
 
 def anthropic_interface() -> AnthropicInterface:
     """Create an instance of the AnthropicInterface class."""
     return AnthropicInterface(ANTHROPIC_API_KEY)
+
+
+def openai_interface() -> OpenaiInterface:
+    """Create an instance of the OpenaiInterface class."""
+    return OpenaiInterface(OPENAI_API_KEY)
 
 
 def whisper() -> WhisperService:
@@ -52,14 +61,17 @@ def google_voice_service() -> GoogleVoiceService:
 
 
 @router.post('/produce_code')
-async def produce_code(
-    body: LlmRequest,
-    llm_interface: Annotated[AnthropicInterface, Depends(anthropic_interface)],
-) -> LlmResponse:
+async def produce_code(body: LlmRequest) -> LlmResponse:
     """Produce code using the language model."""
+    if body.model.name.startswith('ANTHROPIC'):
+        llm_interface = anthropic_interface()
+    else:
+        llm_interface = openai_interface()
+
     return await llm_interface.make_completion(
         system_prompt=body.system_prompt,
         user_request=body.user_request,
+        model=body.model,
     )
 
 
@@ -100,3 +112,5 @@ async def synthesize_speech(
 
 app = FastAPI()
 app.include_router(router)
+
+app.mount("/", StaticFiles(directory="html"), name="html")

@@ -195,6 +195,14 @@ Use, update or change code if needed that may present in input.
         <textarea id="code-text" placeholder="Code by LLM"></textarea>
         <button id="submit-button">Submit</button>
         <button id="submit-button-with-code">Submit with code</button>
+        <div>
+            <select id="llm-model" name="llm-model">
+                <option value="claude-3-5-sonnet-latest" selected>Anthropic Claude 3.5 Sonnet</option>
+                <option value="claude-3-5-haiku-latest">Anthropic Claude 3.5 Haiku</option>
+                <option value="gpt-4o">OpenAI GPT-4O</option>
+                <option value="gpt-4o-mini">OpenAI GPT-4O Mini</option>
+            </select>
+        </div>
         <button id="record-button">Start Recording</button>
         <button id="rerun-button">Rerun</button>
 
