@@ -21,6 +21,8 @@ class LlmModel(enum.StrEnum):
     ANTHROPIC_HAIKU_3_5 = 'claude-3-5-haiku-latest'
     OPENAI_GPT4O = 'gpt-4o'
     OPENAI_GPT4O_MINI = 'gpt-4o-mini'
+    OPENAI_O1 = 'o1-preview'
+    OPENAI_O1_MINI = 'o1-mini'
 
 
 class LlmRequest(BaseModel):
