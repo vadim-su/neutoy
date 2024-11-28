@@ -22,10 +22,16 @@ class OpenaiInterface:
     ) -> LlmResponse:
         """Make a completion request to the OpenAI API."""
 
-        raw_resp = await self.client.beta.chat.completions.parse(
-            model=model,
-            max_tokens=2000,
-            messages=[
+        if model in {LlmModel.OPENAI_O1, LlmModel.OPENAI_O1_MINI}:
+            messages = [
+
+                {
+                    "role": "user",
+                    "content": f'Task: {system_prompt}\n\nUser Request: {user_request}',
+                }
+            ]
+        else:
+            messages = [
                 {
                     "role": "system",
                     "content": system_prompt
@@ -34,7 +40,12 @@ class OpenaiInterface:
                     "role": "user",
                     "content": user_request,
                 }
-            ],
+            ]
+
+        raw_resp = await self.client.beta.chat.completions.parse(
+            model=model,
+            max_tokens=2000,
+            messages=messages,
             response_format=LlmResponse,
         )
 
