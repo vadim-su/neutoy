@@ -44,7 +44,6 @@ class OpenaiInterface:
 
         raw_resp = await self.client.beta.chat.completions.parse(
             model=model,
-            max_tokens=2000,
             messages=messages,
             response_format=LlmResponse,
         )
