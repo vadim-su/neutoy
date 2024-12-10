@@ -17,7 +17,8 @@ class LlmResponse(BaseModel, arbitrary_types_allowed=True):
 class LlmModel(enum.StrEnum):
     """Language model for the code generation."""
 
-    ANTHROPIC_CLAUDE_3_5 = 'claude-3-5-sonnet-latest'
+    ANTHROPIC_SONNET_3_5 = 'claude-3-5-sonnet-latest'
+    ANTHROPIC_SONNET_3_5_OLD = 'claude-3-5-sonnet-20240620'
     ANTHROPIC_HAIKU_3_5 = 'claude-3-5-haiku-latest'
     OPENAI_GPT4O = 'gpt-4o'
     OPENAI_GPT4O_MINI = 'gpt-4o-mini'
@@ -30,7 +31,7 @@ class LlmRequest(BaseModel):
 
     system_prompt: str
     user_request: str
-    model: LlmModel = LlmModel.ANTHROPIC_CLAUDE_3_5
+    model: LlmModel = LlmModel.ANTHROPIC_SONNET_3_5
 
 
 class SpeachTranscriptResponse(BaseModel):
