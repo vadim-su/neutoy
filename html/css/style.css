@@ -10,6 +10,7 @@ body {
     font-style: normal;
     background-color: #a8dcdf;
     position: relative;
+    pointer-events: auto;
 }
 
 body::before {
@@ -75,15 +76,21 @@ body::before {
     background-size: cover;
     transition: all 0.1s ease;
     cursor: pointer;
+    pointer-events: auto;
     border: none;
     background-color: transparent;
     filter: brightness(1);
+    z-index: 10;
 }
 #touch_button:hover {
     filter: brightness(0.9);
+    cursor: pointer;
+    pointer-events: auto;
 }
 #touch_button:active {
     filter: brightness(0.8);
+    cursor: pointer;
+    pointer-events: auto;
 }
 
 #touch_button2 {
@@ -98,6 +105,7 @@ body::before {
     background-size: cover;
     transition: all 0.1s ease;
     cursor: pointer;
+    pointer-events: auto;
     border: none;
     background-color: transparent;
     filter: brightness(1);
@@ -121,6 +129,7 @@ body::before {
     background-size: cover;
     transition: all 0.1s ease;
     cursor: pointer;
+    pointer-events: auto;
     border: none;
     background-color: transparent;
     filter: brightness(1);
@@ -151,7 +160,6 @@ body::before {
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: 20px;
     padding: 15px 25px;
-    font-family: "Roboto", sans-serif;
     font-size: 22px;
     font-weight: 400;
     font-style: normal;
@@ -211,8 +219,9 @@ body::before {
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    pointer-events: auto;
     font-weight: bold;
-    z-index: 1000;
+    z-index: 100;
 }
 
 .project-info {
@@ -226,7 +235,7 @@ body::before {
     box-sizing: border-box;
     overflow-y: auto;
     transition: left 0.1s ease-in-out;
-    z-index: 999;
+    z-index: 99;
 }
 
 .project-info.show {
@@ -261,6 +270,7 @@ textarea[readonly] {
     color: #fff;
     font-size: 16px;
     cursor: pointer;
+    pointer-events: auto;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -303,18 +313,24 @@ button:disabled {
     text-align: right;
     color: #000000;
     padding: 0;
+    cursor: pointer;
+    pointer-events: auto;
+    z-index: 2;
 }
 
 #sitelink a {
     color: #000000;
     text-decoration: underline;
+    display: inline-block;
     cursor: pointer;
+    pointer-events: auto;
 }
 
 #sitelink a:hover {
-    color: #000000;
+    color: #6F559B; /* A visible color change to test hover */
     text-decoration: none;
     cursor: pointer;
+    pointer-events: auto;
 }
 
 #sitelogo {
@@ -323,6 +339,7 @@ button:disabled {
     left: 20px;
     width: 300px;
     padding: 0;
+    z-index: 2; 
 }
 
 #sitelogo img {
@@ -331,6 +348,8 @@ button:disabled {
 
 #sitelogo a {
     cursor: pointer;
+    pointer-events: auto;
+    z-index: 3;
 }
 
 #qr {
@@ -339,6 +358,7 @@ button:disabled {
     right: 20px;
     width: 200px;
     padding: 0;
+    z-index: 2;
 }
 
 #qr img {
