@@ -4,7 +4,10 @@ body {
     padding: 0;
     height: 100%;
     overflow: hidden;
-    font-family: "Roboto", sans-serif;
+    font-family: "Funnel Sans", serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
     background-color: #a8dcdf;
     position: relative;
 }
@@ -25,6 +28,8 @@ body::before {
     z-index: 0;
     opacity: 1;
 }
+
+
 
 #emulator {
     position: fixed;
@@ -195,8 +200,8 @@ body::before {
 
 .toggle-button {
     position: fixed;
-    top: 10px;
-    left: 10px;
+    bottom: 20px;
+    left: 20px;
     width: 30px;
     height: 30px;
     background-color: rgba(0, 0, 0, 0.7);
@@ -287,4 +292,59 @@ button:disabled {
     color: #666666;
     cursor: not-allowed;
     box-shadow: none;
+}
+
+
+#sitelink {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    /* z-index: 1000; */
+    font-size: 56px;
+    text-align: right;
+    color: #000000;
+    text-decoration: none;
+    padding: 0;
+}
+
+#sitelink a {
+    color: #000000;
+    text-decoration: underline;
+}
+
+#sitelink a:hover {
+    color: #000000;
+    text-decoration: none;
+}
+
+#sitelogo {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 300px;
+    /* font-size: 56px; */
+    /* text-align: right; */
+    /* color: #000000; */
+    /* text-decoration: none; */
+    padding: 0;
+}
+
+#sitelogo img {
+    width: 300px;
+}
+
+#qr {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    width: 200px;
+    /* font-size: 56px; */
+    /* text-align: right; */
+    /* color: #000000; */
+    /* text-decoration: none; */
+    padding: 0;
+}
+
+#qr img {
+    width: 200px;
 }
