@@ -299,22 +299,22 @@ button:disabled {
     position: absolute;
     bottom: 20px;
     right: 20px;
-    /* z-index: 1000; */
     font-size: 56px;
     text-align: right;
     color: #000000;
-    text-decoration: none;
     padding: 0;
 }
 
 #sitelink a {
     color: #000000;
     text-decoration: underline;
+    cursor: pointer;
 }
 
 #sitelink a:hover {
     color: #000000;
     text-decoration: none;
+    cursor: pointer;
 }
 
 #sitelogo {
@@ -322,10 +322,6 @@ button:disabled {
     top: 20px;
     left: 20px;
     width: 300px;
-    /* font-size: 56px; */
-    /* text-align: right; */
-    /* color: #000000; */
-    /* text-decoration: none; */
     padding: 0;
 }
 
@@ -333,15 +329,15 @@ button:disabled {
     width: 300px;
 }
 
+#sitelogo a {
+    cursor: pointer;
+}
+
 #qr {
     position: absolute;
     top: 20px;
     right: 20px;
     width: 200px;
-    /* font-size: 56px; */
-    /* text-align: right; */
-    /* color: #000000; */
-    /* text-decoration: none; */
     padding: 0;
 }
 
