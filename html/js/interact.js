@@ -3,6 +3,7 @@ import { recordHandler } from './voice.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const touchButton = document.getElementById('touch_button');
+    const touchButton2 = document.getElementById('touch_button2');
     const speakButton = document.getElementById('speak_button');
     const tapSound = document.getElementById('tapSound');
 
@@ -16,6 +17,28 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Force stopping recording');
         await recordHandler(false);
     };
+
+    // Add click and touch events for touch_button
+    touchButton.addEventListener('click', (e) => {
+        e.preventDefault();
+        playTapSound();
+    });
+
+    touchButton.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        playTapSound();
+    }, { passive: false });
+
+    // Add click and touch events for touch_button2
+    touchButton2.addEventListener('click', (e) => {
+        e.preventDefault();
+        playTapSound();
+    });
+
+    touchButton2.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        playTapSound();
+    }, { passive: false });
 
     // Remove document-wide event listeners and only add them to speak button
     speakButton.addEventListener('mousedown', async (e) => {
