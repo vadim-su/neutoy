@@ -24,7 +24,6 @@ class OpenaiInterface:
 
         if model in {LlmModel.OPENAI_O1, LlmModel.OPENAI_O1_MINI}:
             system_prompt += """
-
                 Response should be in the following json format (only json, no add any other characters like ```json):
                 {
                     "reason": "Reasoning of your decisions.",
@@ -43,9 +42,8 @@ class OpenaiInterface:
                     "content": user_request,
                 }
             ]
-            raw_resp = self.client.beta.chat.completions.parse(
-                # model="o1-mini",
-                model="o1-preview",
+            raw_resp = await self.client.beta.chat.completions.parse(
+                model=model,
                 messages=messages,  # type: ignore
             )
             content = raw_resp.choices[0].message.content
