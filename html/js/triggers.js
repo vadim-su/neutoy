@@ -26,7 +26,7 @@ class Triggers {
 
   _handleButton1Press(button) {
     if (this.button1_handler) {
-      this.button_handler(button);
+      this.button1_handler(button);
     }
   }
 
