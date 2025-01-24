@@ -75,8 +75,9 @@ body::before {
     background-repeat: no-repeat;
     background-size: cover;
     transition: all 0.1s ease;
-    cursor: pointer;
-    pointer-events: auto;
+    /* cursor: pointer; */
+    cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><text x="0" y="40" font-size="48">👆</text></svg>') 16 16, auto;
+    /* pointer-events: auto; */
     border: none;
     background-color: transparent;
     filter: brightness(1);
@@ -84,13 +85,14 @@ body::before {
 }
 #touch_button:hover {
     filter: brightness(0.9);
-    cursor: pointer;
-    pointer-events: auto;
+    /* cursor: pointer; */
+    /* pointer-events: auto; */
+    cursor: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><text x="0" y="40" font-size="48">👆</text></svg>') 16 16, auto;
 }
 #touch_button:active {
     filter: brightness(0.8);
-    cursor: pointer;
-    pointer-events: auto;
+    /* cursor: pointer; */
+    /* pointer-events: auto; */
 }
 
 #touch_button2 {
