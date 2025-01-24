@@ -4,7 +4,8 @@ import {
   cleanup,
   clear,
   draw,
-  set_button_handler,
+  set_button1_handler,
+  set_button2_handler,
   set_pixel,
   set_timeout,
 } from "./lib.js";
@@ -15,7 +16,8 @@ const allowedFunctions = {
   clear,
   draw,
   set_pixel,
-  set_button_handler,
+  set_button1_handler,
+  set_button2_handler,
   set_timeout,
   cleanup,
 };

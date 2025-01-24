@@ -51,7 +51,8 @@ export function set_timeout(func, delay) {
 }
 
 export function cleanup() {
-    set_button_handler(null);
+    set_button1_handler(null);
+    set_button2_handler(null);
     for (let timer of timeouts) {
         clearTimeout(timer);
     }
