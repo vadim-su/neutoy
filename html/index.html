@@ -150,7 +150,8 @@ You can use only the following colors:
 The user will ask to make the device be something. You can write code to make the device be this thing. It would help if you described your decisions and wrote the code at the end of your response.
 
 Additional Functions:
-- `set_button_handler(handler)` -- set button handler
+- `set_button1_handler(handler)` -- set button handler
+- `set_button2_handler(handler)` -- set button handler
 - `set_timeout(handler, timeout)` -- set timeout (DO NOT USE `setTimeout` from built-in JS)
 
 Example Usage:
@@ -233,7 +234,7 @@ Use, update or change code if needed that may present in input.
     <div id="qr">
         <img src="assets/qr.png" />
     </div>
-    
+
     <audio id="tapSound" src="assets/tap.mp3"></audio>
     <script type="module" src="js/interact.js"></script>
     <script type="module" src="js/script.js"></script>

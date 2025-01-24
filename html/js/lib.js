@@ -24,8 +24,12 @@ export function init_lib() {
     };
 }
 
-export function set_button_handler(handler) {
-    systems.triggers.on_button_pressed(handler);
+export function set_button1_handler(handler) {
+    systems.triggers.on_button1_pressed(handler);
+}
+
+export function set_button2_handler(handler) {
+    systems.triggers.on_button2_pressed(handler);
 }
 
 export function set_pixel(x, y, color) {
@@ -77,8 +81,10 @@ function _init_gyro() {
 
 function _init_button() {
     // Initialize button
-    const button = document.getElementById('touch_button');
+    const button1 = document.getElementById('touch_button');
+    const button2 = document.getElementById('touch_button2');
     const triggers = new Triggers();
-    triggers.bind_handler(button);
+    triggers.bind_handler1(button1);
+    triggers.bind_handler2(button2);
     return triggers;
 }
