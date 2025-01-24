@@ -14,7 +14,7 @@ class Triggers {
 
   bind_handler1(button) {
     button.addEventListener('click', () => {
-      this._handleButtonPress(button);
+      this._handleButton1Press(button);
     });
   }
 
