@@ -310,24 +310,17 @@ button:disabled {
     text-align: right;
     color: #000000;
     padding: 0;
-    cursor: pointer;
-    pointer-events: auto;
     z-index: 2;
 }
 
 #sitelink a {
-    color: #000000;
+    color: #221E1F;
     text-decoration: underline;
-    display: inline-block;
-    cursor: pointer;
-    pointer-events: auto;
 }
 
 #sitelink a:hover {
     color: #6F559B; /* A visible color change to test hover */
     text-decoration: none;
-    cursor: pointer;
-    pointer-events: auto;
 }
 
 #sitelogo {
@@ -344,8 +337,6 @@ button:disabled {
 }
 
 #sitelogo a {
-    cursor: pointer;
-    pointer-events: auto;
     z-index: 3;
 }
 
@@ -361,3 +352,5 @@ button:disabled {
 #qr img {
     width: 200px;
 }
+
+p {margin: 0; padding: 0; font-size: 16px; color:#221E1F;}
