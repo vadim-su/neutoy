@@ -144,6 +144,7 @@ body::before {
 
 
 #bubbles {
+    display: none;
     position: fixed;
     top: 0;
     left: 50%;
@@ -208,7 +209,7 @@ body::before {
 
 .toggle-button {
     position: fixed;
-    bottom: 20px;
+    bottom: 40px;
     left: 20px;
     width: 30px;
     height: 30px;
@@ -307,7 +308,7 @@ button:disabled {
 
 #sitelink {
     position: absolute;
-    bottom: 20px;
+    bottom: 40px;
     right: 20px;
     font-size: 56px;
     text-align: right;
